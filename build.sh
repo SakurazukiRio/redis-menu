@@ -90,7 +90,9 @@ EOF
     fi
     if [ -f "$PROJECT_DIR/RedisMenu/Assets.xcassets/CompanyLogo.imageset/Maquina Logo.svg" ]; then
         cp "$PROJECT_DIR/RedisMenu/Assets.xcassets/CompanyLogo.imageset/Maquina Logo.svg" "$APP_BUNDLE_DIR/Contents/Resources/CompanyLogo.svg"
-    fi
+    # 进行本地 Ad-hoc 代码签名以避免 macOS 安全拦截
+    echo "正在对应用程序进行本地代码签名..."
+    codesign --force --deep -s - "$APP_BUNDLE_DIR" 2>/dev/null || true
 fi
 
 # 检查构建结果
