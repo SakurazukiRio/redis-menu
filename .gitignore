@@ -1,2 +1,4 @@
 Resources/redis
+RedisMenu/Resources/redis
+build/
 .DS_Store

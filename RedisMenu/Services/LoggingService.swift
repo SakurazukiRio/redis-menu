@@ -5,7 +5,6 @@
 //  Created by Mario Alberto Chávez on 31/03/25.
 //
 
-
 import Foundation
 
 class LoggingService {
@@ -15,11 +14,11 @@ class LoggingService {
     private let dateFormatter: DateFormatter
     
     init() {
-        // Setup date formatter for log timestamps
+        // 设置日志时间戳格式化器
         dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
-        // Create app support directory for logs
+        // 创建用于存储日志的 Application Support 目录
         let fileManager = FileManager.default
         var appSupportDir = try! fileManager.url(for: .applicationSupportDirectory,
                                                 in: .userDomainMask,
@@ -32,26 +31,26 @@ class LoggingService {
             try! fileManager.createDirectory(at: appSupportDir, withIntermediateDirectories: true, attributes: nil)
         }
         
-        // Set log file path
+        // 设置日志文件路径
         logFile = appSupportDir.appendingPathComponent("redismenu.log")
         
-        // Initialize log file if it doesn't exist
+        // 若日志文件不存在则初始化创建
         if !fileManager.fileExists(atPath: logFile.path) {
             fileManager.createFile(atPath: logFile.path, contents: nil, attributes: nil)
         }
         
-        // Log app start
-        log("RedisMenu started")
+        // 记录应用启动日志
+        log("RedisMenu 已启动")
     }
     
     func log(_ message: String, level: LogLevel = .info) {
         let timestamp = dateFormatter.string(from: Date())
         let logMessage = "[\(timestamp)] [\(level.rawValue)] \(message)\n"
         
-        // Print to console
+        // 输出到控制台
         print(logMessage, terminator: "")
         
-        // Write to file
+        // 写入到日志文件
         if let data = logMessage.data(using: .utf8) {
             if let fileHandle = try? FileHandle(forWritingTo: logFile) {
                 fileHandle.seekToEndOfFile()
@@ -64,12 +63,12 @@ class LoggingService {
     enum LogLevel: String {
         case debug = "DEBUG"
         case info = "INFO"
-        case warning = "WARNING"
+        case warning = "WARN"
         case error = "ERROR"
     }
 }
 
-// Convenience functions
+// 便捷日志输出函数
 func logDebug(_ message: String) {
     LoggingService.shared.log(message, level: .debug)
 }

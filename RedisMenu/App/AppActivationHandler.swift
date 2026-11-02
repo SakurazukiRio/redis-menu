@@ -5,7 +5,6 @@
 //  Created by Mario Alberto Chávez on 31/03/25.
 //
 
-
 import Cocoa
 
 class AppActivationHandler {
@@ -14,13 +13,13 @@ class AppActivationHandler {
     private let appIdentifier: String
     
     private init() {
-        self.appIdentifier = Bundle.main.bundleIdentifier ?? "com.example.RedisMenu"
+        self.appIdentifier = Bundle.main.bundleIdentifier ?? "com.maquina-app.RedisMenu"
     }
     
-    /// Check if another instance is running and activate it
-    /// - Returns: true if this is the first instance, false if another instance is running
+    /// 检查是否有其他实例正在运行并将其激活
+    /// - Returns: 如果是首个实例返回 true，如果已有实例在运行则返回 false
     func checkAndActivateExistingInstance() -> Bool {
-        // Register for activation response from existing instance
+        // 注册接收现有实例的激活响应
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(handleExistingInstanceResponse),
@@ -28,7 +27,7 @@ class AppActivationHandler {
             object: nil
         )
         
-        // Post notification to see if an existing instance responds
+        // 发送分布式通知，检查是否有现有实例响应
         DistributedNotificationCenter.default().postNotificationName(
             NSNotification.Name("\(appIdentifier).ActivateApp"),
             object: appIdentifier,
@@ -36,7 +35,7 @@ class AppActivationHandler {
             deliverImmediately: true
         )
         
-        // Wait briefly to see if existing instance responds
+        // 短暂等待现有实例的响应
         let date = Date()
         let runLoop = RunLoop.current
         while Date().timeIntervalSince(date) < 1.0 {
